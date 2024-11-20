@@ -6,8 +6,10 @@ const fs = require('fs');
 const Blog = require('../models/Blog');
 const jwt = require('jsonwebtoken');
 const uploadDir = 'uploads';
+if(process.env.NODE_ENV!=='production'){
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
+}
 }
 
 // Multer configuration
