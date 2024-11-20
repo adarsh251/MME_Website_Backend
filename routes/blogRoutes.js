@@ -26,11 +26,11 @@ const storage = process.env.NODE_ENV === 'production'
   });
 
   const fileFilter = (req, file, cb) => {
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/heic'];
     if (allowedTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error('Invalid file type. Only JPEG, PNG and GIF images are allowed.'), false);
+      cb(new Error('Invalid file type. Only JPEG, PNG, WEBP, HEIC and GIF images are allowed.'), false);
     }
   };
 
