@@ -73,18 +73,34 @@ router.post('/blogs', upload.single('image'), async (req, res) => {
       let imagePath=null;
       let imageFile=null;
       if (req.file) {
-        
-
-      // Read the uploaded file
-      const imageData = fs.readFileSync(req.file.path);
-      imagePath= req.file.path,
-        imageFile= {
+        if (process.env.NODE_ENV === 'production') {
+          imagePath = null;
+          imageFile = {
+            data: req.file.buffer,
+            contentType: req.file.mimetype
+          };
+        }
+        else{
+          const imageData = fs.readFileSync(req.file.path);
+          imagePath= req.file.path,
+          imageFile= {
           //data: imageData,
           // data: req.file.buffer,
-          data:(process.env.NODE_ENV === 'production' 
-          ? req.file.buffer:imageData),
+          data:imageData,
           contentType: req.file.mimetype
+        };
         }
+
+      // Read the uploaded file
+      // const imageData = fs.readFileSync(req.file.path);
+      // imagePath= req.file.path,
+      //   imageFile= {
+      //     //data: imageData,
+      //     // data: req.file.buffer,
+      //     data:(process.env.NODE_ENV === 'production' 
+      //     ? req.file.buffer:imageData),
+      //     contentType: req.file.mimetype
+      //   }
       }
       const newBlog = new Blog({
         author,
