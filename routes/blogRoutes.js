@@ -11,7 +11,9 @@ if (!fs.existsSync(uploadDir)) {
 }
 
 // Multer configuration
-const storage = multer.diskStorage({
+const storage = process.env.NODE_ENV === 'production' 
+? multer.memoryStorage():
+ multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, 'uploads/');
     },
@@ -75,7 +77,10 @@ router.post('/blogs', upload.single('image'), async (req, res) => {
       const imageData = fs.readFileSync(req.file.path);
       imagePath= req.file.path,
         imageFile= {
-          data: imageData,
+          //data: imageData,
+          // data: req.file.buffer,
+          data:(process.env.NODE_ENV === 'production' 
+          ? req.file.buffer:imageData),
           contentType: req.file.mimetype
         }
       }
